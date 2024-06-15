@@ -10,16 +10,33 @@
 }
 
 .right-panel {
-  position: relative;
+  width: 80%;
   padding: 10px;
+  position: relative;
 }
+
 
 .table-item {
   border: 1px solid lightblue;
   border-radius: 10px;
   padding: 2px;
   margin: 5px;
-  background-color: bisque;
+}
+
+.grid {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.resizable-table {
+  border: 1px solid #ccc;
+  background-color: #fff;
+  overflow: auto;
+  cursor: move;
+  display: flex;
+  flex-direction: column;
+  resize: both;
 }
 
 .table-container {
@@ -42,15 +59,12 @@
   text-align: center;
 }
 
-.table-close {
-  cursor: pointer;
-}
-
-.table-columns{
+.table-columns {
+  flex-grow: 1;
   overflow-y: auto;
 }
 
-.table-columns-header{
+.table-columns-header {
   display: flex;
   justify-content: space-between;
   padding: 4px 8px;
@@ -58,9 +72,42 @@
   border: 1px solid #ccc;
 }
 
-.columns{
+.columns {
   display: flex;
   justify-content: space-between;
   padding: 4px 8px;
   border: 1px solid #ccc;
+}
+
+.table-footer {
+  padding: 4px 8px;
+  text-align: center;
+  background-color: #e9e9e9;
+  border-top: 1px solid #ccc;
+}
+
+.react-resizable-handle {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  bottom: 0;
+  right: 0;
+  background: #ccc;
+  cursor: se-resize;
+}
+
+.react-resizable-handle-e {
+  cursor: e-resize;
+  width: 10px;
+  height: 100%;
+  right: 0;
+  top: 0;
+}
+
+.react-resizable-handle-s {
+  cursor: s-resize;
+  height: 10px;
+  width: 100%;
+  bottom: 0;
+  left: 0;
 }

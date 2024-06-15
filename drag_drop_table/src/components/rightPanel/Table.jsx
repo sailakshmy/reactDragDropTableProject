@@ -1,14 +1,32 @@
-import React from "react";
-import { FaTimes } from "react-icons/fa";
+import React, { useRef } from "react";
+import { FaGripHorizontal, FaTimes } from "react-icons/fa";
+import { ResizableBox } from 'react-resizable';
 
 const Table = ({ table, tables, setTables }) => {
+  const tableRef = useRef(null);
   const handleRemove = () => {
     let currentTableList = tables?.filter((tab) => table?.id !== tab?.id);
     setTables(currentTableList);
   };
+
+  const handle = (
+    <span className="react-resizable-handle react-resizable-handle-se" />
+  );
   return (
+<ResizableBox
+ref={tableRef}
+       width={300}
+       height={200}
+       minConstraints={[200, 100]}
+       maxConstraints={[500, 400]}
+       handle={handle}
+       resizeHandles={[ 'e', 's']}
+       className="resizable-table"
+       style={{ position: 'absolute', left: table.x, top: table.y }}
+    >
     <div className="table-container">
       <div className="table-header">
+      <FaGripHorizontal className="table-drag-handle" />
         <span className="table-title">{table?.name}</span>
         <FaTimes className="table-close" onClick={handleRemove} />
       </div>
@@ -24,7 +42,9 @@ const Table = ({ table, tables, setTables }) => {
           </div>
         ))}
       </div>
+      <div className="table-footer">Scroll to see more columns</div>
     </div>
+    </ResizableBox>
   );
 };
 
