@@ -1,10 +1,13 @@
-import React from 'react'
+import React from 'react';
+import TableItem from './TableItem';
 
-const TableList = () => {
+
+const TableList = ({tables}) => {
   return (
-    <div>
-      TableList
-      
+    <div className='table-list'>
+    {tables.map(table =>
+      <TableItem table={table} key={table?.id}/>
+    )}   
     </div>
   )
 }
