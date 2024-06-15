@@ -1,0 +1,15 @@
+.App {
+  display: flex;
+  height: 100vh;
+}
+
+.left-panel{
+  width: 20%;
+  border-right: 1px solid #ccc;
+  padding: 10px;
+}
+
+.right-panel{
+  position: relative;
+  padding: 10px;
+}

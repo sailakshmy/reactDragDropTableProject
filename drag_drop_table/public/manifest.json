@@ -1,0 +1,10 @@
+{
+  "short_name": "React Drag and Drop Tables App",
+  "name": "Create React Drag and Drop Tables App Sample",
+  "icons": [
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
