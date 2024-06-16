@@ -1,15 +1,85 @@
-import React, { useState } from 'react';
-import { tables as tableList } from '../../utilities/constants';
-import Table from './Table';
+import React, { useCallback } from "react";
+import ReactFlow, {
+  useReactFlow
+} from "react-flow-renderer";
+import Table from "./Table";
+const nodeTypes = { resizableTable: Table };
 
-const Grid = () => {
-  const [tables, setTables] = useState([...tableList]);
-  
+const Grid = ({
+  nodes,
+  edges,
+  onConnect,
+  onDragEnd,
+  setReactFlowInstance,
+  reactFlowInstance,
+  setNodes,
+  nodesState,
+  onEdgesChange,
+  onNodesChange,
+}) => {
+  const { setViewport } = useReactFlow();
+
+  const onDrop = useCallback(
+    (event) => {
+      console.log("Jefewf");
+      event.preventDefault();
+      console.log("Pheq");
+      const reactFlowBounds = event.target.getBoundingClientRect();
+      const table = JSON.parse(event.dataTransfer.getData("application/reactflow"));
+      console.log("table", table)
+      const type = event.dataTransfer.getData("application/reactflow");
+
+      // check if the dropped element is valid
+      if (typeof type === "undefined" || !type) {
+        return;
+      }
+
+      const position = reactFlowInstance.project({
+        x: event.clientX - reactFlowBounds.left,
+        y: event.clientY - reactFlowBounds.top,
+      });
+
+      const newNode = {
+        id: table.id.toString(),
+        type: "resizableTable",
+        position,
+        data: { ...table },
+      };
+console.log("nodes",nodes)
+      setNodes((nds) => nds.concat(newNode));
+      console.log("YOoo");
+    },
+    [reactFlowInstance, setNodes]
+  );
+
   return (
-    <div>
-      {tables?.map(table=> <Table table={table} key={table?.id} tables={tables} setTables={setTables}/>)}
+    <div
+      className="grid"
+      onDrop={onDrop}
+      onDragOver={(event) => event.preventDefault()}
+      style={{ width: 1000, height: 1000 }}
+    >
+      {console.log("nodes inside",nodes)}
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
+        nodeTypes={nodeTypes}
+        onInit={setReactFlowInstance}
+        fitView
+        style={{ width: "100%", height: "100%" }}
+      >
+        {nodes?.map((node)=> <div key={node?.id}>{node?.data?.name}
+        <Table table={node} tables={nodes} setTables={setNodes}/>
+        </div>)}
+      
+        {/* <Controls /> */}
+        {/* <Background /> */}
+      </ReactFlow>
     </div>
-  )
-}
+  );
+};
 
-export default Grid
+export default Grid;
