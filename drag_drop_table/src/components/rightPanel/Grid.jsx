@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import ReactFlow, { useReactFlow } from "react-flow-renderer";
+import ReactFlow from "reactflow";
 import 'reactflow/dist/style.css';
 import Table from "./Table";
 const nodeTypes = { resizableTable: Table };
@@ -16,37 +16,25 @@ const Grid = ({
   onNodesChange,
   onNodesDelete
 }) => {
-  const { setViewport } = useReactFlow();
 
     const handleRemove = (table) => {
-      console.log("table to be removed", table)
       const nodeList = nodes?.filter((node)=>node?.id !== table?.[0]?.id)
       setNodes(nodeList);
       onNodesDelete(table)
   };
   const onDrop = useCallback(
     (event) => {
-      console.log("Jefewf");
       event.preventDefault();
-      console.log("Pheq");
       const reactFlowBounds = event.target.getBoundingClientRect();
       const table = JSON.parse(
         event.dataTransfer.getData("application/reactflow")
       );
-      console.log("table", table);
-      const type = event.dataTransfer.getData("application/reactflow");
-
-      // check if the dropped element is valid
-      if (typeof type === "undefined" || !type) {
-        return;
-      }
 
       const position = reactFlowInstance.project({
         x: event.clientX - reactFlowBounds.left,
         y: event.clientY - reactFlowBounds.top,
       });
       const existingNodes = nodes?.find((node) => node?.id === table?.id);
-      console.log("nodes", nodes,existingNodes);
       if (!existingNodes) {
         const newNode = {
           id: table.id.toString(),
@@ -57,11 +45,9 @@ const Grid = ({
         newNode.data= {...newNode.data, onDelete: ()=> handleRemove([newNode])}
 
         setNodes((nds) => nds.concat(newNode));
-        console.log("newNode", newNode)
       } else {
         alert("This table already exists in the grid");
       }
-      console.log("YOoo");
     },
     [reactFlowInstance, setNodes, nodes]
   );
@@ -71,9 +57,8 @@ const Grid = ({
       className="grid"
       onDrop={onDrop}
       onDragOver={(event) => event.preventDefault()}
-      style={{ width: 1000, height: 1000 }}
+    
     >
-      {console.log("nodes inside", nodes)}
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -85,7 +70,6 @@ const Grid = ({
         nodeTypes={nodeTypes}
         onInit={setReactFlowInstance}
         fitView
-        style={{ width: "100%", height: "100%" }}
       >
       </ReactFlow>
     </div>

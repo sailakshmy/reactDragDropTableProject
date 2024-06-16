@@ -1,23 +1,31 @@
-import React, { useRef } from "react";
-// import { ResizableBox } from "react-resizable";
-import { Handle, Position } from "react-flow-renderer";
+import React, { useCallback, useRef } from "react";
 import { FaTimes } from "react-icons/fa";
+import { Handle, NodeResizer, Position } from "reactflow";
+const debounce = (func, wait) => {
+  let timeout;
+  return (...args) => {
+    const context = this;
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(context, args), wait);
+  };
+};
 const Table = (props) => {
   const tableRef = useRef(null);
-  console.log("table inside Table", props);
 
-
-  const handle = (
-    <span className="react-resizable-handle react-resizable-handle-se" />
-  );
-
+  const handleResize = useCallback(debounce((size) => {
+  }, 100), []);
   return (
     <>
-  
+      <NodeResizer
+        color="#ff0071"
+        isVisible
+        minWidth={150}
+        minHeight={100}
+        onResize={(event, { size }) => handleResize(size)}
+      />
      <div className="table-container" ref={tableRef}>
      <Handle type="target" position={Position.Left} />
      <div className="table-header">
-       {/* <FaGripHorizontal className="table-drag-handle" /> */}
        <span className="table-title">{props?.data?.name}</span>
        <FaTimes className="table-close" onClick={()=>props?.data?.onDelete()} />
      </div>
@@ -38,7 +46,6 @@ const Table = (props) => {
      <div className="table-footer">Scroll to see more columns</div>
      <Handle type="source" position={Position.Right} />
    </div>
-
     </>
 
   );
