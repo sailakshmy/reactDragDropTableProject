@@ -14,9 +14,16 @@ const Grid = ({
   setNodes,
   onEdgesChange,
   onNodesChange,
+  onNodesDelete
 }) => {
   const { setViewport } = useReactFlow();
 
+    const handleRemove = (table) => {
+      console.log("table to be removed", table)
+      const nodeList = nodes?.filter((node)=>node?.id !== table?.[0]?.id)
+      setNodes(nodeList);
+      onNodesDelete(table)
+  };
   const onDrop = useCallback(
     (event) => {
       console.log("Jefewf");
@@ -45,10 +52,12 @@ const Grid = ({
           id: table.id.toString(),
           type: "resizableTable",
           position,
-          data: { ...table },
+          data: { ...table},
         };
+        newNode.data= {...newNode.data, onDelete: ()=> handleRemove([newNode])}
 
         setNodes((nds) => nds.concat(newNode));
+        console.log("newNode", newNode)
       } else {
         alert("This table already exists in the grid");
       }
@@ -69,6 +78,8 @@ const Grid = ({
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
+        deleteKeyCode={["Backspace","Delete"]}
+        onNodesDelete={onNodesDelete}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         nodeTypes={nodeTypes}

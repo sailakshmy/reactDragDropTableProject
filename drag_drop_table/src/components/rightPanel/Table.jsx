@@ -1,13 +1,11 @@
 import React, { useRef } from "react";
 // import { ResizableBox } from "react-resizable";
 import { Handle, Position } from "react-flow-renderer";
+import { FaTimes } from "react-icons/fa";
 const Table = (props) => {
   const tableRef = useRef(null);
   console.log("table inside Table", props);
-  // const handleRemove = () => {
-  //   let currentTableList = tables?.filter((tab) => table?.id !== tab?.id);
-  //   setTables(currentTableList);
-  // };
+
 
   const handle = (
     <span className="react-resizable-handle react-resizable-handle-se" />
@@ -21,7 +19,7 @@ const Table = (props) => {
      <div className="table-header">
        {/* <FaGripHorizontal className="table-drag-handle" /> */}
        <span className="table-title">{props?.data?.name}</span>
-       {/* <FaTimes className="table-close" onClick={() => handleRemove()} /> */}
+       <FaTimes className="table-close" onClick={()=>props?.data?.onDelete()} />
      </div>
      <div className="table-columns">
        <div className="table-columns-header">
