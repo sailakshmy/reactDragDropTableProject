@@ -4,7 +4,7 @@ const TableItem = ({ table }) => {
   const [expandTable, setExpandTable] = useState(false);
   const toggleTableDetails = () => setExpandTable(!expandTable);
   return (
-    <div className="table-item">
+    <div>
       <span onClick={toggleTableDetails}>{expandTable ? "-" : "+"}</span>
       {table.name}
       {expandTable && (

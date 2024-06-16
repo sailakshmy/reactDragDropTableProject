@@ -17,8 +17,6 @@ const Table = (props) => {
   return (
     <>
       <NodeResizer
-        color="#ff0071"
-        isVisible
         minWidth={150}
         minHeight={100}
         onResize={(event, { size }) => handleResize(size)}
