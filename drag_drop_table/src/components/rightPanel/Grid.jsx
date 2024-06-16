@@ -1,7 +1,5 @@
 import React, { useCallback } from "react";
-import ReactFlow, {
-  useReactFlow
-} from "react-flow-renderer";
+import ReactFlow, { useReactFlow } from "react-flow-renderer";
 import Table from "./Table";
 const nodeTypes = { resizableTable: Table };
 
@@ -25,8 +23,10 @@ const Grid = ({
       event.preventDefault();
       console.log("Pheq");
       const reactFlowBounds = event.target.getBoundingClientRect();
-      const table = JSON.parse(event.dataTransfer.getData("application/reactflow"));
-      console.log("table", table)
+      const table = JSON.parse(
+        event.dataTransfer.getData("application/reactflow")
+      );
+      console.log("table", table);
       const type = event.dataTransfer.getData("application/reactflow");
 
       // check if the dropped element is valid
@@ -38,18 +38,23 @@ const Grid = ({
         x: event.clientX - reactFlowBounds.left,
         y: event.clientY - reactFlowBounds.top,
       });
+      const existingNodes = nodes?.find((node) => node?.id === table?.id);
+      console.log("nodes", nodes,existingNodes);
+      if (!existingNodes) {
+        const newNode = {
+          id: table.id.toString(),
+          type: "resizableTable",
+          position,
+          data: { ...table },
+        };
 
-      const newNode = {
-        id: table.id.toString(),
-        type: "resizableTable",
-        position,
-        data: { ...table },
-      };
-console.log("nodes",nodes)
-      setNodes((nds) => nds.concat(newNode));
+        setNodes((nds) => nds.concat(newNode));
+      } else {
+        alert("This table already exists in the grid");
+      }
       console.log("YOoo");
     },
-    [reactFlowInstance, setNodes]
+    [reactFlowInstance, setNodes, nodes]
   );
 
   return (
@@ -59,7 +64,7 @@ console.log("nodes",nodes)
       onDragOver={(event) => event.preventDefault()}
       style={{ width: 1000, height: 1000 }}
     >
-      {console.log("nodes inside",nodes)}
+      {console.log("nodes inside", nodes)}
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -71,10 +76,13 @@ console.log("nodes",nodes)
         fitView
         style={{ width: "100%", height: "100%" }}
       >
-        {nodes?.map((node)=> <div key={node?.id}>{node?.data?.name}
-        <Table table={node} tables={nodes} setTables={setNodes}/>
-        </div>)}
-      
+        {nodes?.map((node) => (
+          <div key={node?.id}>
+            {node?.data?.name}
+            <Table table={node} tables={nodes} setTables={setNodes} />
+          </div>
+        ))}
+
         {/* <Controls /> */}
         {/* <Background /> */}
       </ReactFlow>
