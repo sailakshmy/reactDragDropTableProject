@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import ReactFlow, { useReactFlow } from "react-flow-renderer";
+import 'reactflow/dist/style.css';
 import Table from "./Table";
 const nodeTypes = { resizableTable: Table };
 
@@ -11,7 +12,6 @@ const Grid = ({
   setReactFlowInstance,
   reactFlowInstance,
   setNodes,
-  nodesState,
   onEdgesChange,
   onNodesChange,
 }) => {
@@ -76,15 +76,6 @@ const Grid = ({
         fitView
         style={{ width: "100%", height: "100%" }}
       >
-        {nodes?.map((node) => (
-          <div key={node?.id}>
-            {node?.data?.name}
-            <Table table={node} tables={nodes} setTables={setNodes} />
-          </div>
-        ))}
-
-        {/* <Controls /> */}
-        {/* <Background /> */}
       </ReactFlow>
     </div>
   );

@@ -10,9 +10,10 @@ import TableList from "./components/leftPanel/TableList";
 import Grid from "./components/rightPanel/Grid";
 import { tables as tableList } from "./utilities/constants";
 
+const edgesList = [{ id: '1-2', source: '1', target: '2' }];
 function App() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(edgesList);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
   const onConnect = (params) => setEdges((eds) => addEdge(params, eds));
@@ -26,7 +27,6 @@ function App() {
   );
 
   return (
-    <div style={{ height: 800, width: 800 }}>
       <ReactFlowProvider>
         <div className="App" style={{ height: 800, width: 800 }}>
           <div className="left-panel">
@@ -47,7 +47,6 @@ function App() {
           </div>
         </div>
       </ReactFlowProvider>
-    </div>
   );
 }
 
